@@ -7,9 +7,9 @@ body {
     background-color: black;
     border-radius: 12px;
     box-shadow: 0px 0px 2px #7c7c7c;
-    border: 2px solid gray;
+    border: 2px solid white;
     margin: auto;
-    width: 20%;
+    width: fit-content;
     padding: 20px;
     background-image: url("https://i.ytimg.com/vi/uuLMbgxyWIM/maxresdefault.jpg");
     background-size: cover;
@@ -63,18 +63,19 @@ HEADER
 }
 
 .calc-button {
-    font-size: xx-large;
-    border-radius: 45px;
+    font-size: x-large;
+    border-radius: 50px;
     border: 2px solid gray;
     color: white;
     aspect-ratio: 1;
-    transition: transform .1s; /* Animation */
+    transition: transform .3s; /* Animation */
     opacity: .9;
 }
 
 .calc-button:hover {
     transform: scale(1.03);
     opacity: 1;
+    border: 2px solid white;
 }
 
 #calc-display {
@@ -82,6 +83,8 @@ HEADER
     width: 100%;
     font-size: xx-large;
     opacity: .8;
+    text-overflow: ellipsis;
+    text-align: right;
 }
 
 
