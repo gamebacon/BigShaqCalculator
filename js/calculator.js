@@ -1,8 +1,6 @@
 
-
 const buttonElements = document.getElementsByClassName("calc-button");
 const input_display = document.getElementById('calc-display')
-
 
 /*
  Kallar på init först så allt är klart för att användas.
@@ -26,13 +24,26 @@ function init () {
 
 
 /*
+Räknar ut resultatet.
+ */
+function calculate(result) {
+    let stack = []
+    stack.push(")");
+    result += "(";
+
+    for(let i = result.length; i >= 0; i--) {
+        console.log(result[i]);
+    }
+
+}
+
+
+/*
 Kollar om inmatningen är en operatör.
  */
 function isOperator(op) {
-    isop = /[/*+-]/.test(op);
-
-    console.log("op: " + isop + ">" + op + "<");
-
+    let isop = /[/*+-]/.test(op);
+    //console.log("op: " + isop + ">" + op + "<");
     return isop;
 }
 
@@ -50,24 +61,20 @@ function getLastInput() {
     return input_display.value.slice(-1);
 }
 
-/*
-Räknar ut resultatet.
- */
-function calculate(result) {
-
-}
-
 
 /*
  Kollar om det är tomt i display rutan.
  */
 function isEmpty() {
-    empty = input_display.value.length == 0;
-    console.log("empty: " + empty)
+    let empty = input_display.value.length === 0;
+    //console.log("empty: " + empty)
     return empty;
 }
 
 
+function removeLast() {
+    input_display.value = input_display.value.slice(0, -1);
+}
 
 /*
 Hanterar inmatning.
@@ -76,6 +83,8 @@ function onInput(val) {
 
     if(val === 'C') { //Återställer miniräknaren.
         reset()
+    } else if(val === 'CE') {
+        removeLast()
     } else if(val === '=') { //beräknar resultatet.
         calculate(input_display.value);
     } else if(canInput(val)) //lägger till händelsen i minnet efter kontroll.
