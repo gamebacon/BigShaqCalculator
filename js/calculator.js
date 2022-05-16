@@ -4,6 +4,9 @@ const buttonElements = document.getElementsByClassName("calc-button");
 const input_display = document.getElementById('calc-display')
 
 
+/*
+ Kallar på init först så allt är klart för att användas.
+ */
 init()
 
 /*
@@ -11,6 +14,9 @@ initialiserar
  */
 function init () {
 
+    /*
+    Itererar och lägger till onInput() när man trycker på knapparna, här skickar jag med knappens värde.
+     */
     for(const button of buttonElements) {
         button.addEventListener('click', event => {
             onInput(button.value)
@@ -20,7 +26,7 @@ function init () {
 
 
 /*
-kollar om inmatningen är en opperatär
+kollar om inmatningen är en operatör.
  */
 function isOperator(op) {
     isop = /[/*+-]/.test(op);
@@ -45,7 +51,7 @@ function getLastInput() {
 }
 
 /*
-kalkulerar inmatning.
+räknar ut resultatet.
  */
 function calculate(result) {
 

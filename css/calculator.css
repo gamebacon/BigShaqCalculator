@@ -1,6 +1,6 @@
 body {
     padding-top: 100px;
-    background: #157347;
+    background: black;
 }
 
 .calculator {
@@ -63,13 +63,14 @@ HEADER
 }
 
 .calc-button {
-    font-size: x-large;
+    font-size: xxx-large;
     border-radius: 50px;
     border: 2px solid gray;
     color: white;
     aspect-ratio: 1;
     transition: transform .3s; /* Animation */
     opacity: .9;
+    font-weight: bolder;
 }
 
 .calc-button:hover {
