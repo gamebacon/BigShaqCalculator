@@ -26,7 +26,7 @@ function init () {
 
 
 /*
-kollar om inmatningen är en operatör.
+Kollar om inmatningen är en operatör.
  */
 function isOperator(op) {
     isop = /[/*+-]/.test(op);
@@ -37,27 +37,30 @@ function isOperator(op) {
 }
 
 /*
-kollar om inmatning är ett nummer.
+Kollar om inmatning är ett nummer.
  */
 function isNum(val) {
     return /\d/.test(val);
 }
 
 /*
-hämtar senaste karaktären i input-displayen.
+Hämtar senaste karaktären i input-displayen.
  */
 function getLastInput() {
     return input_display.value.slice(-1);
 }
 
 /*
-räknar ut resultatet.
+Räknar ut resultatet.
  */
 function calculate(result) {
 
 }
 
 
+/*
+ Kollar om det är tomt i display rutan.
+ */
 function isEmpty() {
     empty = input_display.value.length == 0;
     console.log("empty: " + empty)
@@ -73,7 +76,7 @@ function onInput(val) {
 
     if(val === 'C') { //Återställer miniräknaren.
         reset()
-    } else if(val === '=') { //beräknar uttrycket.
+    } else if(val === '=') { //beräknar resultatet.
         calculate(input_display.value);
     } else if(canInput(val)) //lägger till händelsen i minnet efter kontroll.
         input_display.value += val;
