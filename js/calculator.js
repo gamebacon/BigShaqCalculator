@@ -1,6 +1,6 @@
 
 const buttonElements = document.getElementsByClassName("calc-button");
-const input_display = document.getElementById('calc-display')
+const display = document.getElementById('display')
 
 /*
  Kallar på init först så allt är klart för att användas.
@@ -91,21 +91,23 @@ function calculateExpression(num1, num2, op) {
 function calculatePostFix(postfix) {
     let stack = [];
 
-    for(let i = 0; i < postfix.length - 1; i++) {
+    for(let i = 0; i < postfix.length; i++) {
         const symbol = postfix[i];
 
         if(isNum(symbol)) {
             stack.push(symbol)
         } else {
-            const num1 = stack.pop();
-            const num2 = stack.pop();
-            const op = stack[i];
+            const num1 = parseInt(stack.pop());
+            const num2 = parseInt(stack.pop());
+            const op = postfix[i];
             const result = calculateExpression(num1, num2, op)
+            console.log(`${num1} ${op} ${num2} = ${result}`)
             stack.push(result);
         }
 
     }
 
+    console.log("Res: " + stack);
 }
 
 
@@ -129,7 +131,7 @@ function isNum(val) {
 Hämtar senaste karaktären i input-displayen.
  */
 function getLastInput() {
-    return input_display.value.slice(-1);
+    return display.value.slice(-1);
 }
 
 
@@ -137,14 +139,14 @@ function getLastInput() {
  Kollar om det är tomt i display rutan.
  */
 function isEmpty() {
-    let empty = input_display.value.length === 0;
+    let empty = display.value.length === 0;
     //console.log("empty: " + empty)
     return empty;
 }
 
 
 function removeLast() {
-    input_display.value = input_display.value.slice(0, -1);
+    display.value = display.value.slice(0, -1);
 }
 
 /*
@@ -157,9 +159,9 @@ function onInput(val) {
     } else if(val === 'CE') { //Tar bort sista karaktären.
         removeLast()
     } else if(val === '=') { //beräknar resultatet.
-        calculate(input_display.value);
+        calculate(display.value);
     } else if(canInput(val)) //lägger till händelsen i minnet efter kontroll.
-        input_display.value += val;
+        display.value += val;
 
 }
 
@@ -175,7 +177,7 @@ function canInput(inp) {
 Återställer miniräknaren.
  */
 function reset () {
-    input_display.value = "";
+    display.value = "";
 }
 
 

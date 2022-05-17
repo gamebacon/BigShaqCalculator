@@ -3,7 +3,7 @@ body {
     background: black;
 }
 
-.calculator {
+.container {
     background-color: black;
     border-radius: 12px;
     box-shadow: 0px 0px 2px #7c7c7c;
@@ -14,7 +14,7 @@ body {
 }
 
 
-.background-img {
+.big-shaq-img {
     background-image: url("https://i.ytimg.com/vi/uuLMbgxyWIM/maxresdefault.jpg");
     background-size: cover;
     background-position-x: center;
@@ -22,7 +22,7 @@ body {
     background-repeat: space;
 }
 
-.grid-container {
+.calculator {
     display: grid;
     grid-gap: 2px;
     grid-template-columns: 3fr 1fr;
@@ -68,7 +68,7 @@ HEADER
     grid-row: span 5;
 }
 
-.calc-button {
+.number-buttons {
     font-size: xx-large;
     border-radius: 50px;
     border: 2px solid gray;
@@ -80,7 +80,7 @@ HEADER
     height: 100%;
 }
 
-.calc-button:hover {
+.number-buttons:hover {
     transform: scale(1.03);
     opacity: 1;
     border: 2px solid white;
@@ -91,7 +91,7 @@ HEADER
     font-size: xx-large;
     text-overflow: ellipsis;
     text-align: right;
-    color: green;
+    color: #44C553;
     font-family: Digital-7, serif;
 }
 
