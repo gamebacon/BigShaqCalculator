@@ -23,16 +23,87 @@ function init () {
 }
 
 
+function getOperatorPriority(op) {
+    switch (op) {
+        case '(': return 0;
+        case '-':
+        case '+': return 1;
+        case '/':
+        case '*': return 2;
+    }
+}
+
 /*
 Räknar ut resultatet.
  */
 function calculate(result) {
     let stack = []
-    stack.push(")");
-    result += "(";
+    let postfix = []
 
-    for(let i = result.length; i >= 0; i--) {
-        console.log(result[i]);
+    //result = `(${result})`;
+
+    for(const symbol of result) {
+
+        if(isNum(symbol)) {
+            postfix.push(symbol)
+        } else if(symbol === '(') {
+            stack.push(symbol)
+        } else if(symbol === ')') {
+
+            for(let i = 0; i < stack.length; i++) {
+
+                let inStack = stack.pop();
+
+                if(inStack === '(')
+                    break;
+
+                postfix.push(inStack)
+
+            }
+        } else {
+            for(let i = 0; i < stack.length; i++)
+                if(getOperatorPriority(stack[stack.length - 1]) >= getOperatorPriority(symbol))
+                    postfix.push(stack.pop());
+                else
+                    break;
+            stack.push(symbol);
+
+        }
+    }
+
+    for(let i = 0; i < stack.length; i++) {
+        postfix.push(stack.pop())
+    }
+
+    console.log(postfix.toLocaleString());
+    calculatePostFix(postfix);
+}
+
+function calculateExpression(num1, num2, op) {
+    switch(op) {
+        case '-': return num1 - num2;
+        case '+': return num1 + num2;
+        case '/': return num1 / num2;
+        case '*': return num1 * num2;
+    }
+}
+
+function calculatePostFix(postfix) {
+    let stack = [];
+
+    for(let i = 0; i < postfix.length - 1; i++) {
+        const symbol = postfix[i];
+
+        if(isNum(symbol)) {
+            stack.push(symbol)
+        } else {
+            const num1 = stack.pop();
+            const num2 = stack.pop();
+            const op = stack[i];
+            const result = calculateExpression(num1, num2, op)
+            stack.push(result);
+        }
+
     }
 
 }
@@ -83,7 +154,7 @@ function onInput(val) {
 
     if(val === 'C') { //Återställer miniräknaren.
         reset()
-    } else if(val === 'CE') {
+    } else if(val === 'CE') { //Tar bort sista karaktären.
         removeLast()
     } else if(val === '=') { //beräknar resultatet.
         calculate(input_display.value);
@@ -100,7 +171,9 @@ function canInput(inp) {
 }
 
 
-//återställer miniräknaren.
+/*
+Återställer miniräknaren.
+ */
 function reset () {
     input_display.value = "";
 }
