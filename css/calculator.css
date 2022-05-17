@@ -11,6 +11,10 @@ body {
     margin: auto;
     width: fit-content;
     padding: 20px;
+}
+
+
+.background-img {
     background-image: url("https://i.ytimg.com/vi/uuLMbgxyWIM/maxresdefault.jpg");
     background-size: cover;
     background-position-x: center;
