@@ -76,6 +76,24 @@ function calculate(result) {
     }
 
     console.log(postfix.toLocaleString());
+    calculatePostFix(postfix);
+}
+
+function calculatePostFix(postfix) {
+    let stack = [];
+
+    for(let i = 0; i < postfix.length - 1; i++) {
+        const symbol = postfix[i];
+
+        if(isNum(symbol)) {
+            stack.push(symbol)
+        } else {
+            const num1 = stack.pop();
+            const num2 = stack.pop();
+        }
+
+    }
+
 }
 
 
