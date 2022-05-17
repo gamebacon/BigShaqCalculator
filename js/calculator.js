@@ -79,6 +79,15 @@ function calculate(result) {
     calculatePostFix(postfix);
 }
 
+function calculateExpression(num1, num2, op) {
+    switch(op) {
+        case '-': return num1 - num2;
+        case '+': return num1 + num2;
+        case '/': return num1 / num2;
+        case '*': return num1 * num2;
+    }
+}
+
 function calculatePostFix(postfix) {
     let stack = [];
 
@@ -90,6 +99,9 @@ function calculatePostFix(postfix) {
         } else {
             const num1 = stack.pop();
             const num2 = stack.pop();
+            const op = stack[i];
+            const result = calculateExpression(num1, num2, op)
+            stack.push(result);
         }
 
     }
