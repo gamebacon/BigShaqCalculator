@@ -45,6 +45,7 @@ HEADER
     grid-gap: 5px;
     grid-row: span 1;
 }
+
 .grid-numbers {
     grid-column: 1 / 2;
     display: grid;
@@ -53,6 +54,7 @@ HEADER
     grid-gap: 5px;
     grid-row: span 4;
 }
+
 .grid-sidebar {
     grid-column: 2/3;
     display: grid;
