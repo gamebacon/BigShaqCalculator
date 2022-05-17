@@ -1,6 +1,12 @@
 
 const buttonElements = document.getElementsByClassName("calc-button");
+const quickMathSwitch = document.getElementById('math-switch');
 const display = document.getElementById('display')
+const calculator = document.getElementById('calculator')
+
+const instrumental = new Audio("/audio/instrumental.mp3")
+instrumental.volume = .2
+let quickMathAudio = []
 
 /*
  Kallar på init först så allt är klart för att användas.
@@ -20,10 +26,15 @@ function init () {
             onInput(button.value)
         })
     }
+
+    for(let i = 0; i < 51; i++) {
+        quickMathAudio[i] = new Audio(`/audio/quickmath/${i+1}.mp3`)
+    }
+
 }
 
 
-function getOperatorPriority(op) {
+function getPriority(op) {
     switch (op) {
         case '(': return 0;
         case '-':
@@ -33,18 +44,41 @@ function getOperatorPriority(op) {
     }
 }
 
+function parseResult(inp) {
+    let result = []
+
+    let fullNum = "";
+
+    for(let i = 0; i < inp.length; i++) {
+
+        let symbol = inp[i];
+
+        if(isNumberCharacter(symbol)) {
+            fullNum += symbol;
+        } else {
+            result.push(fullNum);
+            result.push(symbol);
+            fullNum = "";
+        }
+    }
+
+    result.push(fullNum)
+
+    return result;
+}
+
 /*
 Räknar ut resultatet.
  */
-function calculate(result) {
+function calculate(inp) {
+    result = parseResult(inp);
+
     let stack = []
     let postfix = []
 
-    //result = `(${result})`;
-
     for(const symbol of result) {
 
-        if(isNum(symbol)) {
+        if(isNumber(symbol)) {
             postfix.push(symbol)
         } else if(symbol === '(') {
             stack.push(symbol)
@@ -61,25 +95,28 @@ function calculate(result) {
 
             }
         } else {
-            for(let i = 0; i < stack.length; i++)
-                if(getOperatorPriority(stack[stack.length - 1]) >= getOperatorPriority(symbol))
+            for(let i = 0; i < stack.length; i++) {
+                if(getPriority(stack[stack.length - 1]) >= getPriority(symbol))
                     postfix.push(stack.pop());
                 else
                     break;
+            }
             stack.push(symbol);
 
         }
     }
 
-    for(let i = 0; i < stack.length; i++) {
+    for(let i = 0; i <= stack.length; i++) {
         postfix.push(stack.pop())
     }
 
-    console.log(postfix.toLocaleString());
     calculatePostFix(postfix);
 }
 
 function calculateExpression(num1, num2, op) {
+    num1 = parseFloat(num1);
+    num2 = parseFloat(num2);
+
     switch(op) {
         case '-': return num1 - num2;
         case '+': return num1 + num2;
@@ -91,23 +128,31 @@ function calculateExpression(num1, num2, op) {
 function calculatePostFix(postfix) {
     let stack = [];
 
-    for(let i = 0; i < postfix.length; i++) {
+    for(let i = 0; i < postfix.length ; i++) {
         const symbol = postfix[i];
 
-        if(isNum(symbol)) {
+        //36, 9
+        //+
+
+
+        if(isNumber(symbol)) {
             stack.push(symbol)
         } else {
-            const num1 = parseInt(stack.pop());
-            const num2 = parseInt(stack.pop());
-            const op = postfix[i];
+            const num2 = stack.pop();
+            const num1 = stack.pop();
+            const op = symbol;
             const result = calculateExpression(num1, num2, op)
-            console.log(`${num1} ${op} ${num2} = ${result}`)
+            //console.log(`${num1} ${op} ${num2} = ${result}`)
             stack.push(result);
         }
 
     }
 
-    console.log("Res: " + stack);
+    if(stack.length === 2)
+        stack.push(calculateExpression(stack.pop(), stack.pop(), "+"))
+
+
+    display.value = stack.pop();
 }
 
 
@@ -123,8 +168,16 @@ function isOperator(op) {
 /*
 Kollar om inmatning är ett nummer.
  */
-function isNum(val) {
+function isInteger(val) {
     return /\d/.test(val);
+}
+
+function isNumber(val) {
+    return /^\d*(\.\d+)?$/.test(val);
+}
+
+function isNumberCharacter(val) {
+    return isInteger(val) || val === '.';
 }
 
 /*
@@ -163,6 +216,12 @@ function onInput(val) {
     } else if(canInput(val)) //lägger till händelsen i minnet efter kontroll.
         display.value += val;
 
+    if(quickMathSwitch.checked) {
+        const rand = Math.floor(Math.random() * 51);
+        console.log(rand)
+        quickMathAudio[rand].play();
+    }
+
 }
 
 /*
@@ -178,6 +237,28 @@ function canInput(inp) {
  */
 function reset () {
     display.value = "";
+}
+
+function toggleQuickMath() {
+    const on = quickMathSwitch.checked;
+
+    if(on) {
+        instrumental.loop
+        instrumental.play();
+        calculator.classList.add('big-shaq')
+    } else {
+        instrumental.pause()
+        calculator.classList.remove('big-shaq')
+    }
+
+}
+
+function playSound(src, volume = 1, loop = false) {
+   const audio = new Audio(src);
+   audio.volume = volume;
+   audio.loop = loop;
+   audio.play();
+
 }
 
 
