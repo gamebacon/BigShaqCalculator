@@ -220,7 +220,7 @@ function onInput(val) {
 
     if(quickMathSwitch.checked) {
         const rand = Math.floor(Math.random() * 51);
-        console.log(rand)
+        //console.log(rand)
         quickMathAudio[rand].play();
     }
 
