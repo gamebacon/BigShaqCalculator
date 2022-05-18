@@ -5,7 +5,6 @@ const display = document.getElementById('display')
 const calculator = document.getElementById('calculator')
 
 const instrumental = new Audio("/audio/instrumental.mp3")
-instrumental.volume = .2
 let quickMathAudio = []
 
 /*
@@ -30,6 +29,9 @@ function init () {
     for(let i = 0; i < 51; i++) {
         quickMathAudio[i] = new Audio(`/audio/quickmath/${i+1}.mp3`)
     }
+
+    instrumental.volume = .2
+    instrumental.loop = true;
 
 }
 
