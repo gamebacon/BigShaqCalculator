@@ -127,6 +127,16 @@ function calculateExpression(num1, num2, op) {
     }
 }
 
+function validateResult(pop) {
+    switch (pop) {
+        case "infinity":
+        case "Nan": display.value = "Error"
+        default: display.value = pop;
+    }
+
+    console.log("Valid!")
+}
+
 function calculatePostFix(postfix) {
     let stack = [];
 
@@ -154,7 +164,7 @@ function calculatePostFix(postfix) {
         stack.push(calculateExpression(stack.pop(), stack.pop(), "+"))
 
 
-    display.value = stack.pop();
+    validateResult(stack.pop());
 }
 
 
