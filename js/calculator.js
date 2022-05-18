@@ -26,11 +26,11 @@ function init () {
         })
     }
 
-    for(let i = 0; i < 51; i++) {
+    for(let i = 0; i < 62; i++) {
         quickMathAudio[i] = new Audio(`/audio/quickmath/${i+1}.mp3`)
     }
 
-    instrumental.volume = .2
+    instrumental.volume = .1
     instrumental.loop = true;
 
 }
@@ -58,7 +58,8 @@ function parseResult(inp) {
         if(isNumberCharacter(symbol)) {
             fullNum += symbol;
         } else {
-            result.push(fullNum);
+            if(fullNum.length > 0)
+                result.push(fullNum);
             result.push(symbol);
             fullNum = "";
         }
@@ -80,7 +81,7 @@ function calculate(inp) {
 
     for(const symbol of result) {
 
-        if(isNumber(symbol)) {
+        if(isNumber2(symbol)) {
             postfix.push(symbol)
         } else if(symbol === '(') {
             stack.push(symbol)
@@ -128,13 +129,14 @@ function calculateExpression(num1, num2, op) {
 }
 
 function validateResult(pop) {
-    switch (pop) {
-        case "infinity":
-        case "Nan": display.value = "Error"
-        default: display.value = pop;
-    }
 
-    console.log("Valid!")
+    console.log("Res: " + pop)
+
+    if(isNumber(pop)) {
+        display.value = pop;
+    } else {
+        display.value = "Error";
+    }
 }
 
 function calculatePostFix(postfix) {
@@ -147,14 +149,14 @@ function calculatePostFix(postfix) {
         //+
 
 
-        if(isNumber(symbol)) {
+        if(isNumber2(symbol)) {
             stack.push(symbol)
         } else {
             const num2 = stack.pop();
             const num1 = stack.pop();
             const op = symbol;
             const result = calculateExpression(num1, num2, op)
-            //console.log(`${num1} ${op} ${num2} = ${result}`)
+            console.log(`${num1} ${op} ${num2} = ${result}`)
             stack.push(result);
         }
 
@@ -164,7 +166,9 @@ function calculatePostFix(postfix) {
         stack.push(calculateExpression(stack.pop(), stack.pop(), "+"))
 
 
-    validateResult(stack.pop());
+    const result = stack.pop();
+
+    validateResult(result);
 }
 
 
@@ -180,16 +184,16 @@ function isOperator(op) {
 /*
 Kollar om inmatning är ett nummer.
  */
-function isInteger(val) {
+function isNumber(val) {
     return /\d/.test(val);
 }
 
-function isNumber(val) {
+function isNumber2(val) {
     return /^\d*(\.\d+)?$/.test(val);
 }
 
 function isNumberCharacter(val) {
-    return isInteger(val) || val === '.';
+    return isNumber(val) || val === '.';
 }
 
 /*
@@ -214,6 +218,14 @@ function removeLast() {
     display.value = display.value.slice(0, -1);
 }
 
+
+function canCalculate() {
+    d = parseResult(display.value);
+    console.log("par: " + d)
+return parseResult(display.value).length >= 3;
+    //return isOperator(display.value) && isNumber(getLastInput())
+}
+
 /*
 Hanterar inmatning.
  */
@@ -224,16 +236,22 @@ function onInput(val) {
     } else if(val === 'CE') { //Tar bort sista karaktären.
         removeLast()
     } else if(val === '=') { //beräknar resultatet.
-        calculate(display.value);
-    } else if(canInput(val)) //lägger till händelsen i minnet efter kontroll.
+        if(canCalculate())
+            calculate(display.value);
+    } else if(canInput(val)) {//lägger till händelsen i minnet efter kontroll.
         display.value += val;
-
-    if(quickMathSwitch.checked) {
-        const rand = Math.floor(Math.random() * 51);
-        //console.log(rand)
-        quickMathAudio[rand].play();
     }
 
+    if(quickMathSwitch.checked) {
+        playRandom()
+    }
+
+}
+
+
+function playRandom() {
+    const rand = Math.floor(Math.random() * quickMathAudio.length);
+    quickMathAudio[rand].play();
 }
 
 /*
@@ -262,14 +280,6 @@ function toggleQuickMath() {
         instrumental.pause()
         calculator.classList.remove('big-shaq')
     }
-
-}
-
-function playSound(src, volume = 1, loop = false) {
-   const audio = new Audio(src);
-   audio.volume = volume;
-   audio.loop = loop;
-   audio.play();
 
 }
 
