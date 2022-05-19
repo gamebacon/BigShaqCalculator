@@ -3,9 +3,13 @@ const buttonElements = document.getElementsByClassName("calc-button");
 const quickMathSwitch = document.getElementById('math-switch');
 const display = document.getElementById('display')
 const calculator = document.getElementById('calculator')
+const background = document.getElementById("background");
 
 const instrumental = new Audio("/audio/instrumental.mp3")
 let quickMathAudio = []
+
+//TODO
+//fix division with negative.
 
 /*
  Kallar på init först så allt är klart för att användas.
@@ -26,12 +30,13 @@ function init () {
         })
     }
 
-    for(let i = 0; i < 62; i++) {
+    for(let i = 0; i < 61; i++) {
         quickMathAudio[i] = new Audio(`/audio/quickmath/${i+1}.mp3`)
     }
 
-    instrumental.volume = .1
+    instrumental.volume = .2
     instrumental.loop = true;
+    instrumental.fastSeek(14.2)
 
 }
 
@@ -243,15 +248,16 @@ function onInput(val) {
     }
 
     if(quickMathSwitch.checked) {
-        playRandom()
+        playRandomSound()
     }
 
 }
 
 
-function playRandom() {
-    const rand = Math.floor(Math.random() * quickMathAudio.length);
-    quickMathAudio[rand].play();
+function playRandomSound() {
+    const index = Math.floor(Math.random() * quickMathAudio.length);
+    console.log("Playing index: " + index + " (" + (index + 1) + ".mp3)")
+    quickMathAudio[index].play();
 }
 
 /*
@@ -269,6 +275,17 @@ function reset () {
     display.value = "";
 }
 
+function spinButtons(spin = true) {
+
+    for(let button of buttonElements) {
+        if(spin)
+            button.style.cssText = 'animation: numRotate 2.5s linear infinite'
+        else
+            button.style.cssText = 'animation: none'
+    }
+
+}
+
 function toggleQuickMath() {
     const on = quickMathSwitch.checked;
 
@@ -276,9 +293,13 @@ function toggleQuickMath() {
         instrumental.loop
         instrumental.play();
         calculator.classList.add('big-shaq')
+        spinButtons()
+        background.style.cssText = "animation: gradient 1s ease infinite; background: linear-gradient(to right, red, blue); background-size: 400%;";
     } else {
         instrumental.pause()
         calculator.classList.remove('big-shaq')
+        spinButtons(false)
+        background.style.cssText = "animation: none; background-size: 100%; background: white;";
     }
 
 }
