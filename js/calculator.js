@@ -140,7 +140,7 @@ function validateResult(pop) {
     if(isNumber(pop)) {
         display.value = pop;
     } else {
-        display.value = "Error";
+        display.value = "error";
     }
 }
 
@@ -235,6 +235,10 @@ return parseResult(display.value).length >= 3;
 Hanterar inmatning.
  */
 function onInput(val) {
+
+    if(display.value === "error") {
+        reset()
+    }
 
     if(val === 'C') { //Återställer miniräknaren.
         reset()
