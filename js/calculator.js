@@ -8,8 +8,6 @@ const background = document.getElementById("background");
 const instrumental = new Audio("/audio/instrumental.mp3")
 let quickMathAudio = []
 
-//TODO
-//fix division with negative.
 
 /*
  Kallar på init först så allt är klart för att användas.
@@ -40,7 +38,9 @@ function init () {
 
 }
 
-
+/*
+    Hämtar prioriteten för pemdas
+ */
 function getPriority(op) {
     switch (op) {
         case '(': return 0;
@@ -51,6 +51,9 @@ function getPriority(op) {
     }
 }
 
+/*
+    parsar inputen
+ */
 function parseResult(inp) {
     let result = []
 
@@ -76,7 +79,7 @@ function parseResult(inp) {
 }
 
 /*
-Räknar ut resultatet.
+    Omvandlar inputen till ett postfix för att kunna hantera pemdas
  */
 function calculate(inp) {
     result = parseResult(inp);
@@ -121,6 +124,9 @@ function calculate(inp) {
     calculatePostFix(postfix);
 }
 
+/*
+    Beräknar det givna uttrycket
+ */
 function calculateExpression(num1, num2, op) {
     num1 = parseFloat(num1);
     num2 = parseFloat(num2);
@@ -133,9 +139,10 @@ function calculateExpression(num1, num2, op) {
     }
 }
 
+/*
+    Visar resultatet
+ */
 function validateResult(pop) {
-
-    console.log("Res: " + pop)
 
     if(isNumber(pop)) {
         display.value = pop;
@@ -144,15 +151,14 @@ function validateResult(pop) {
     }
 }
 
+/*
+    Beräknar postfixet
+ */
 function calculatePostFix(postfix) {
     let stack = [];
 
     for(let i = 0; i < postfix.length ; i++) {
         const symbol = postfix[i];
-
-        //36, 9
-        //+
-
 
         if(isNumber2(symbol)) {
             stack.push(symbol)
@@ -161,7 +167,6 @@ function calculatePostFix(postfix) {
             const num1 = stack.pop();
             const op = symbol;
             const result = calculateExpression(num1, num2, op)
-            console.log(`${num1} ${op} ${num2} = ${result}`)
             stack.push(result);
         }
 
@@ -197,6 +202,9 @@ function isNumber2(val) {
     return /^\d*(\.\d+)?$/.test(val);
 }
 
+/*
+    kollar om det
+ */
 function isNumberCharacter(val) {
     return isNumber(val) || val === '.';
 }
@@ -214,21 +222,23 @@ function getLastInput() {
  */
 function isEmpty() {
     let empty = display.value.length === 0;
-    //console.log("empty: " + empty)
     return empty;
 }
 
 
+/*
+    Tar bort senaste inputen
+ */
 function removeLast() {
     display.value = display.value.slice(0, -1);
 }
 
 
+/*
+    kollar om det går att beräkna uttrycket.
+ */
 function canCalculate() {
-    d = parseResult(display.value);
-    console.log("par: " + d)
-return parseResult(display.value).length >= 3;
-    //return isOperator(display.value) && isNumber(getLastInput())
+    return parseResult(display.value).length >= 3;
 }
 
 /*
