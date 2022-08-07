@@ -1,3 +1,3 @@
 # Big Shaq's Calculator
 
-<a href="https://bigshaqcalculator.netlify.app">Demo
+Try it out <a href="https://bigshaqcalculator.netlify.app">here
