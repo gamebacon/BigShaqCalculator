@@ -1,4 +1,3 @@
 # Big Shaq's Calculator
 
-## Demo
-https://bigshaqcalculator.netlify.app
+Try it out <a href="https://bigshaqcalculator.netlify.app" target="_blank"\>
